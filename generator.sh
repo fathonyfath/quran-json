@@ -74,6 +74,31 @@ lang_id=id
 last_line=1
 total_ayah_before=0
 
+total_surah=114
+
+echo -n "Generating index ..."
+mkdir -p surah
+printf '{' > surah/index.json
+for surah in $( seq 1 114 )
+do
+    comma=","
+    if [ $surah -eq $total_surah ]; then
+        comma=""
+    fi
+
+    printf \
+'
+    "%s": {
+        "number": "%s",
+        "name": "%s",
+        "name_latin": "%s",
+        "number_of_ayah": "%s"
+    }%s' "$surah" "$surah" "${surah_name_arab[$surah-1]}" "${surah_name_latin[$surah-1]}" "${total_ayah[$surah-1]}" "$comma" >> surah/index.json
+done
+printf '
+}' >> surah/index.json
+echo "done."
+
 for surah in $( seq 1 114 )
 do
     echo -n "Generating surah ${surah} - ${surah_name_latin[$surah-1]} - ${surah_name_arab[$surah-1]} ..."
